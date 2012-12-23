@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>{{#title}}{{title}} - {{/title}}Please Sleep</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Mate+SC' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/blackboard.css" />
+    <link rel="shortcut icon" href="/images/kosei-pic.png" />
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="index.html">Please Sleep</a>
+        <span class="description">From notes on my laptop. ブログ未満な作業ログとか</span>
+      </h1>
+      <h2><a href="{{url}}">{{title}}</a></h2>
+      <address class="author vcard">
+        by <a class="fn url" href="http://cou929.nu/">{{author}}</a>
+        on <abbr title="{{date_iso}}" class="published updated">{{date}}</abbr>
+      </address>
+    </header>
+
+    <article>
+      {{{content}}}
+      {{#disqus_id}}
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'please-sleep';
+        var disqus_identifier = '{{disqus_id}}';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      {{/disqus_id}}
+    </article>
+
+    <nav class="foot_nav">
+      <div class="prev_article">
+        {{#prev_article}}
+        <a href="{{url}}">{{title}} &#187;</a>
+        {{/prev_article}}
+      </div>
+      <div class="next_article">
+        {{#next_article}}
+        <a href="{{url}}">&#171; {{title}}</a>
+        {{/next_article}}
+      </div>
+      <div class="clear" />
+    </nav>
+
+    <footer>
+      <section class="author">
+        <nav>
+          <ul>
+            <li><a href="/index.html"><img width="48" height="48" src="https://si0.twimg.com/profile_images/2856188983/2ea93af055bb1bd2273b7f0649f237db_bigger.jpeg" alt="Kosei Moriyama" class="author-icon author-about"/></a></li>
+            <li><a href="https://twitter.com/cou929"><img width="48" height="48" src="/images/twitter-48.png" alt="twitter" class="author-icon author-twitter"/></a></li>
+            <li><a href="https://github.com/cou929/"><img width="48" height="48" src="/images/github-48.png" alt="github" class="author-icon author-github"/></a></li>
+            <li><a href="rss.xml"><img width="48" height="48" src="/images/rss-48.png" alt="rss" class="author-icon author-rss"/></a></li>
+          </ul>
+        </nav>
+      </section>
+      <div class="clear" />
+    </footer>
+
+    <script src="/js/rainbow.min.js"></script>
+    <script src="/js/language/generic.js"></script>
+    <script src="/js/language/c.js"></script>
+    <script src="/js/language/css.js"></script>
+    <script src="/js/language/html.js"></script>
+    <script src="/js/language/javascript.js"></script>
+    <script src="/js/language/python.js"></script>
+    <script src="/js/language/scheme.js"></script>
+    <script src="/js/language/shell.js"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-848190-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+  </body>
+</html>
