@@ -2,7 +2,7 @@
 
 A static web page generator for myself. Built for [Pleese Sleep](http://please-sleep.cou929.nu/).
 
-*Note*: This script is very early stage of development.
+**Note**: This script is very early stage of development.
 
 ## Synopsys
 
