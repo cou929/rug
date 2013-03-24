@@ -8,7 +8,7 @@ The model account for view.
 
 import os
 import datetime
-import markdown
+import markdown2
 import pystache
 import PyRSS2Gen
 
@@ -66,7 +66,7 @@ class IndivisualPage(Abstract):
             with open(article['path'], 'r') as f:
                 f.readline()  # remove header
                 markdown_string = f.read().decode('utf-8')
-            html = markdown.markdown(markdown_string)
+            html = markdown2.markdown(markdown_string)
             dt = datetime.datetime.fromtimestamp(article['issued'])
             view_params = {
                 'title': article['title'],
@@ -155,7 +155,7 @@ class RSS(Abstract):
             with open(article['path'], 'r') as f:
                 f.readline()  # remove header
                 markdown_string = f.read().decode('utf-8')
-            html = markdown.markdown(markdown_string)
+            html = markdown2.markdown(markdown_string)
             url = host + article['filename'] + '.html'
             items.append(PyRSS2Gen.RSSItem(
                     title=article['title'],
