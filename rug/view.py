@@ -8,7 +8,6 @@ The model account for view.
 
 import os
 import datetime
-from functools import cmp_to_key
 import markdown2
 import pystache
 import PyRSS2Gen
@@ -37,7 +36,7 @@ class Abstract:
 class IndivisualPage(Abstract):
     def _extract_articles(self):
         result = []
-        by_issued_date = cmp_to_key(lambda x, y: x['issued'] - y['issued'])
+        by_issued_date = lambda x: x['issued']
         sorted_list = sorted(self.articles, key=by_issued_date)
         list_length = len(sorted_list)
 
@@ -98,7 +97,7 @@ class ArchivePage(Abstract):
     html_filename = 'index.html'
 
     def _extract_articles(self):
-        by_issued_date = cmp_to_key(lambda x, y: x['issued'] - y['issued'])
+        by_issued_date = lambda x: x['issued']
         result = sorted(self.articles, key=by_issued_date)
         result.reverse()
         return result
@@ -141,7 +140,7 @@ class RSS(Abstract):
     rss_itemnum = 10
 
     def _extract_articles(self):
-        by_issued_date = cmp_to_key(lambda x, y: x['issued'] - y['issued'])
+        by_issued_date = lambda x: x['issued']
         result = sorted(self.articles, key=by_issued_date)
         result.reverse()
         return result[:self.rss_itemnum]
