@@ -8,6 +8,7 @@ The model account for view.
 
 import os
 import datetime
+from functools import cmp_to_key
 import markdown2
 import pystache
 import PyRSS2Gen
@@ -30,14 +31,14 @@ class Abstract:
 
     def _render(self, articles):
         for article in articles:
-            print article.title
+            print(article.title)
 
 
 class IndivisualPage(Abstract):
     def _extract_articles(self):
         result = []
-        by_issued_date = lambda x, y: x['issued'] - y['issued']
-        sorted_list = sorted(self.articles, by_issued_date)
+        by_issued_date = cmp_to_key(lambda x, y: x['issued'] - y['issued'])
+        sorted_list = sorted(self.articles, key=by_issued_date)
         list_length = len(sorted_list)
 
         for i, article in enumerate(sorted_list):
@@ -58,14 +59,14 @@ class IndivisualPage(Abstract):
     def _render(self, articles):
         template_string = ''
         with open(self.template['layout'], 'r') as f:
-            template_string = f.read().decode('utf-8')
+            template_string = f.read()
         parsed = pystache.parse(template_string)
 
         for article in articles:
             markdown_string = ''
             with open(article['path'], 'r') as f:
                 f.readline()  # remove header
-                markdown_string = f.read().decode('utf-8')
+                markdown_string = f.read()
             html = markdown2.markdown(markdown_string)
             dt = datetime.datetime.fromtimestamp(article['issued'])
             view_params = {
@@ -90,26 +91,25 @@ class IndivisualPage(Abstract):
             dest_path = os.path.join(self.output_path,
                               article['filename'] + '.html')
             with open(dest_path, 'w') as f:
-                f.write(self.renderer.render(parsed, view_params)
-                        .encode('utf-8'))
+                f.write(self.renderer.render(parsed, view_params))
 
 
 class ArchivePage(Abstract):
     html_filename = 'index.html'
 
     def _extract_articles(self):
-        by_issued_date = lambda x, y: x['issued'] - y['issued']
-        result = sorted(self.articles, by_issued_date)
+        by_issued_date = cmp_to_key(lambda x, y: x['issued'] - y['issued'])
+        result = sorted(self.articles, key=by_issued_date)
         result.reverse()
         return result
 
     def _render(self, articles):
         template_string = ''
         with open(self.template['content'], 'r') as f:
-            template_string = f.read().decode('utf-8')
+            template_string = f.read()
         content_parsed = pystache.parse(template_string)
         with open(self.template['layout'], 'r') as f:
-            template_string = f.read().decode('utf-8')
+            template_string = f.read()
         layout_parsed = pystache.parse(template_string)
 
         params = []
@@ -133,7 +133,7 @@ class ArchivePage(Abstract):
 
         dest_path = os.path.join(self.output_path, self.html_filename)
         with open(dest_path, 'w') as f:
-            f.write(self.renderer.render(layout_parsed, param).encode('utf-8'))
+            f.write(self.renderer.render(layout_parsed, param))
 
 
 class RSS(Abstract):
@@ -141,8 +141,8 @@ class RSS(Abstract):
     rss_itemnum = 10
 
     def _extract_articles(self):
-        by_issued_date = lambda x, y: x['issued'] - y['issued']
-        result = sorted(self.articles, by_issued_date)
+        by_issued_date = cmp_to_key(lambda x, y: x['issued'] - y['issued'])
+        result = sorted(self.articles, key=by_issued_date)
         result.reverse()
         return result[:self.rss_itemnum]
 
@@ -154,7 +154,7 @@ class RSS(Abstract):
             markdown_string = ''
             with open(article['path'], 'r') as f:
                 f.readline()  # remove header
-                markdown_string = f.read().decode('utf-8')
+                markdown_string = f.read()
             html = markdown2.markdown(markdown_string)
             url = host + article['filename'] + '.html'
             items.append(PyRSS2Gen.RSSItem(

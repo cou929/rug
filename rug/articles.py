@@ -46,7 +46,7 @@ class Articles:
     def _extract_metadata(self, filepath):
         header = ''
         with open(filepath, 'r') as f:
-            header = f.readline().decode('utf-8')
+            header = f.readline()
         (title, tags) = self._parse_header(header)
         (mode, ino, dev, nlink, uid,
          gid, size, atime, mtime, ctime) = os.stat(filepath)
