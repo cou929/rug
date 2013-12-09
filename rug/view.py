@@ -173,4 +173,4 @@ class RSS(Abstract):
             )
 
         dest_path = os.path.join(self.output_path, self.rss_filename)
-        rss.write_xml(open(dest_path, 'w'))
+        rss.write_xml(open(dest_path, 'w'), encoding='utf-8')
