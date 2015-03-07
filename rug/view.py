@@ -70,12 +70,14 @@ class IndivisualPage(Abstract):
             dt = datetime.datetime.fromtimestamp(article['issued'])
             view_params = {
                 'title': article['title'],
-                'date': dt.strftime('%b %d, %Y'),
+                'date': dt.strftime('%d %B %Y'),
                 'date_iso': dt.isoformat(),
                 'author': article['author'],
                 'url': article['filename'] + '.html',
                 'disqus_id': article['filename'],
                 'content': html,
+                'is_article': True,
+                'year': dt.strftime('%Y'),
                 }
             if 'prev' in article:
                 view_params['prev_article'] = {
@@ -104,19 +106,19 @@ class ArchivePage(Abstract):
 
     def _render(self, articles):
         template_string = ''
-        with open(self.template['content'], 'r') as f:
-            template_string = f.read()
-        content_parsed = pystache.parse(template_string)
         with open(self.template['layout'], 'r') as f:
             template_string = f.read()
         layout_parsed = pystache.parse(template_string)
+        with open(self.template['content'], 'r') as f:
+                template_string = f.read()
+                content_parsed = pystache.parse(template_string)
 
         params = []
         for article in articles:
             dt = datetime.datetime.fromtimestamp(article['issued'])
             params.append({
                 'href': article['filename'] + '.html',
-                'date': dt.strftime('%b %d, %Y'),
+                'date': dt.strftime('%d %B %Y'),
                 'title': article['title'],
                 })
         contents = self.renderer.render(content_parsed, {'articles': params})
@@ -124,15 +126,47 @@ class ArchivePage(Abstract):
         dt = datetime.datetime.now()
         param = {
             'content': contents,
-            'date': dt.strftime('%b %d, %Y'),
+            'date': dt.strftime('%d %B %Y'),
             'date_iso': dt.isoformat(),
             'author': articles[0]['author'],
             'url': self.html_filename,
+            'year': dt.strftime('%Y'),
             }
 
         dest_path = os.path.join(self.output_path, self.html_filename)
         with open(dest_path, 'w') as f:
             f.write(self.renderer.render(layout_parsed, param))
+
+
+class AboutPage(Abstract):
+    html_filename = 'about.html'
+    title = 'About me'
+    published_on = datetime.datetime(2014, 2, 24, 1, 37, 27)
+
+    def _render(self, articles):
+        template_string = ''
+        with open(self.template['layout'], 'r') as f:
+            template_string = f.read()
+        parsed = pystache.parse(template_string)
+
+        contents = ''
+        with open(self.template['content'], 'r') as f:
+            contents = f.read()
+
+        today = datetime.datetime.now()
+        param = {
+            'content': contents,
+            'date': self.published_on.strftime('%d %B %Y'),
+            'date_iso': self.published_on.isoformat(),
+            'title': self.title,
+            'url': self.html_filename,
+            'year': today.strftime('%Y'),
+            'is_article': True,
+            }
+
+        dest_path = os.path.join(self.output_path, self.html_filename)
+        with open(dest_path, 'w') as f:
+            f.write(self.renderer.render(parsed, param))
 
 
 class RSS(Abstract):
@@ -167,7 +201,7 @@ class RSS(Abstract):
         rss = PyRSS2Gen.RSS2(
             title='Please Sleep',
             link=host,
-            description=u'From notes on my laptop. ブログ未満な作業ログとか',
+            description=u'From notes on my laptop.',
             lastBuildDate=datetime.datetime.now(),
             items=items
             )

@@ -65,6 +65,11 @@ def run(article_path, template_path, output_path, norss):
     archive_pate = view.ArchivePage(articles, templates, output_path)
     archive_pate.publish()
 
+    templates['content'] = os.path.join(
+        template_path, 'include', 'about.html')
+    about_pate = view.AboutPage([], templates, output_path)
+    about_pate.publish()
+
     if not norss:
         rss = view.RSS(articles, templates, output_path)
         rss.publish()
