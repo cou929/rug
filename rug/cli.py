@@ -10,7 +10,7 @@ import os
 import sys
 import optparse
 from .articles import Articles
-import view
+from .view import IndivisualPage, ArchivePage, AboutPage, RSS
 
 
 def dispatch():
@@ -55,21 +55,21 @@ def run(article_path, template_path, output_path, norss):
     templates = {
         'layout': os.path.join(template_path, 'layout.mustache')
         }
-    indivisual_page = view.IndivisualPage(articles,
+    indivisual_page = IndivisualPage(articles,
                                           templates,
                                           output_path)
     indivisual_page.publish()
 
     templates['content'] = os.path.join(
         template_path, 'include', 'archive.mustache')
-    archive_pate = view.ArchivePage(articles, templates, output_path)
+    archive_pate = ArchivePage(articles, templates, output_path)
     archive_pate.publish()
 
     templates['content'] = os.path.join(
         template_path, 'include', 'about.html')
-    about_pate = view.AboutPage([], templates, output_path)
+    about_pate = AboutPage([], templates, output_path)
     about_pate.publish()
 
     if not norss:
-        rss = view.RSS(articles, templates, output_path)
+        rss = RSS(articles, templates, output_path)
         rss.publish()
