@@ -22,8 +22,8 @@ class Articles:
 
     def load(self):
         result = []
-        liste = self._list_articles(self.path)
-        for article in liste:
+        articles = self._list_articles(self.path)
+        for article in articles:
             result.append(self._extract_metadata(article))
         self.articles = result
 
