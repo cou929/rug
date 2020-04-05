@@ -24,7 +24,7 @@ class Articles:
         result = []
         articles = self._list_articles(self.path)
         for article in articles:
-            result.append(self._extract_metadata(article))
+            result.append(self._parse_article(article))
         self.articles = result
 
     def get(self):
@@ -43,10 +43,12 @@ class Articles:
 
         return results
 
-    def _extract_metadata(self, filepath):
+    def _parse_article(self, filepath):
         header = ''
+        markdown_string = ''
         with open(filepath, 'r') as f:
             header = f.readline()
+            markdown_string = f.read()
         (title, tags) = self._parse_header(header)
         (mode, ino, dev, nlink, uid,
          gid, size, atime, mtime, ctime) = os.stat(filepath)
@@ -61,6 +63,7 @@ class Articles:
             'issued': issued,
             'path': filepath,
             'filename': filename,
+            'content': markdown_string,
             }
 
     def _parse_header(self, header):

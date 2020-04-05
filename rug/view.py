@@ -62,11 +62,7 @@ class IndivisualPage(Abstract):
         parsed = pystache.parse(template_string)
 
         for article in articles:
-            markdown_string = ''
-            with open(article['path'], 'r') as f:
-                f.readline()  # remove header
-                markdown_string = f.read()
-            html = markdown2.markdown(markdown_string)
+            html = markdown2.markdown(article['content'])
             dt = datetime.datetime.fromtimestamp(article['issued'])
             view_params = {
                 'title': article['title'],
