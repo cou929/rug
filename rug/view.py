@@ -68,7 +68,6 @@ class IndivisualPage(Abstract):
                 'title': article['title'],
                 'date': dt.strftime('%d %B %Y'),
                 'date_iso': dt.isoformat(),
-                'author': article['author'],
                 'url': article['filename'] + '.html',
                 'disqus_id': article['filename'],
                 'content': html,
@@ -124,7 +123,6 @@ class ArchivePage(Abstract):
             'content': contents,
             'date': dt.strftime('%d %B %Y'),
             'date_iso': dt.isoformat(),
-            'author': articles[0]['author'],
             'url': self.html_filename,
             'year': dt.strftime('%Y'),
             }
