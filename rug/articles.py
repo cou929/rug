@@ -9,6 +9,8 @@ The model account for articles.
 import os
 import re
 import pwd
+import json
+import dateutil.parser
 
 
 class Articles:
@@ -116,6 +118,31 @@ class Articles:
             if i not in checked:
                 checked.append(i)
         return checked
+
+
+class ArticlesWithMeta(Articles):
+    def _parse_article(self, filepath):
+        header = ''
+        markdown_string = ''
+        is_separater = re.compile('^$')
+        with open(filepath, 'r') as f:
+            for line in f:
+                if is_separater.match(line):
+                    markdown_string = f.read()
+                else:
+                    header += line
+        meta = json.loads(header)
+        title = meta['title']
+        issued = dateutil.parser.isoparse(meta['date']).timestamp()
+        filename = '.'.join(filepath.split('/')[-1].split('.')[0:-1])
+
+        return {
+            'title': title,
+            'issued': issued,
+            'path': filepath,
+            'filename': filename,
+            'content': markdown_string,
+        }
 
 
 if __name__ == '__main__':

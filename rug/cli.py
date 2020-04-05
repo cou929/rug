@@ -10,6 +10,7 @@ import os
 import sys
 import optparse
 from .articles import Articles
+from .articles import ArticlesWithMeta
 from .view import IndivisualPage, ArchivePage, AboutPage, RSS
 
 
@@ -51,7 +52,7 @@ def dispatch():
 
 
 def run(article_path, template_path, output_path, norss):
-    articles = Articles(article_path).get()
+    articles = ArticlesWithMeta(article_path).get()
     templates = {
         'layout': os.path.join(template_path, 'layout.mustache')
         }
