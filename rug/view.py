@@ -8,9 +8,9 @@ The model account for view.
 
 import os
 import datetime
-import markdown2
 import pystache
 import PyRSS2Gen
+import subprocess
 
 
 class Abstract:
@@ -62,7 +62,9 @@ class IndivisualPage(Abstract):
         parsed = pystache.parse(template_string)
 
         for article in articles:
-            html = markdown2.markdown(article['content'])
+            p = subprocess.run(["blackfriday-tool"], input=article['content'],
+                           text=True, stdout=subprocess.PIPE)
+            html = p.stdout.strip()
             dt = datetime.datetime.fromtimestamp(article['issued'])
             view_params = {
                 'title': article['title'],
@@ -182,7 +184,9 @@ class RSS(Abstract):
             with open(article['path'], 'r') as f:
                 f.readline()  # remove header
                 markdown_string = f.read()
-            html = markdown2.markdown(markdown_string)
+            p = subprocess.run(["blackfriday-tool"], input=markdown_string,
+                               text=True, stdout=subprocess.PIPE)
+            html = p.stdout.strip()
             url = host + article['filename'] + '.html'
             items.append(PyRSS2Gen.RSSItem(
                     title=article['title'],

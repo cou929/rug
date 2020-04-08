@@ -6,6 +6,7 @@ A static web page generator for myself. Built for [Please Sleep](http://please-s
 
 ## Synopsys
 
+    go get github.com/russross/blackfriday-tool
     rug -a /path/to/articles/ -t /path/to/templates/ -o /path/to/output/
 
 This will search the articles in `/path/to/articles/`, which is written as markdown, build html with templates and save these to `/path/to/output/`.
